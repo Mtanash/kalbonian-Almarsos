@@ -1,5 +1,5 @@
-let gradeCalc = function (studentScore, totalScore) {
-    let percent = (studentScore / totalScore) * 100
+const gradeCalc = function (studentScore, totalScore) {
+    const percent = (studentScore / totalScore) * 100
     let grade
     if (percent >= 90 && percent <= 100) {
         grade = "A"
