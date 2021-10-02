@@ -1,24 +1,25 @@
+"use strict";
+
 // read notes from local storage
-const getSavedNotes = function () {
+const getSavedNotes = () => {
   const notesJSON = localStorage.getItem("notes");
-  if (notesJSON !== null) {
-    return JSON.parse(notesJSON);
-  } else {
+
+  try {
+    return notesJSON ? JSON.parse(notesJSON) : [];
+  } catch (e) {
     return [];
   }
 };
 
 // remove note from the list
-const removeNote = function (id) {
-  const noteIndex = notes.findIndex((note) => {
-    return note.id === id;
-  });
+const removeNote = (id) => {
+  const noteIndex = notes.findIndex((note) => note.id === id);
 
   if (noteIndex > -1) notes.splice(noteIndex, 1);
 };
 
 // generate note dom
-const generateNoteDOM = function (note) {
+const generateNoteDOM = (note) => {
   const noteElement = document.createElement("div");
   const textElement = document.createElement("a");
   const button = document.createElement("button");
@@ -45,7 +46,7 @@ const generateNoteDOM = function (note) {
 };
 
 // sort notes by on of the filters
-const sortNotes = function (notes, sortBy) {
+const sortNotes = (notes, sortBy) => {
   if (sortBy === "byEdited") {
     return notes.sort((a, b) => {
       if (a.updatedAt > b.updatedAt) {
@@ -82,11 +83,11 @@ const sortNotes = function (notes, sortBy) {
 };
 
 // render application notes
-const renderNotes = function (notes, filters) {
+const renderNotes = (notes, filters) => {
   notes = sortNotes(notes, filters.sortBy);
-  const filteredNotes = notes.filter((note) => {
-    return note.title.toLowerCase().includes(filters.searchText.toLowerCase());
-  });
+  const filteredNotes = notes.filter((note) =>
+    note.title.toLowerCase().includes(filters.searchText.toLowerCase())
+  );
 
   const notesContainer = document.querySelector("#notes-container");
   notesContainer.innerHTML = "";
@@ -98,6 +99,6 @@ const renderNotes = function (notes, filters) {
 };
 
 // save data to lacalstorage
-const saveData = function (notes) {
+const saveData = (notes) => {
   localStorage.setItem("notes", JSON.stringify(notes));
 };
