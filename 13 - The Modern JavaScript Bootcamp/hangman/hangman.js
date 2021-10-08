@@ -50,7 +50,3 @@ class Hangman {
     }
   }
 }
-
-const game1 = new Hangman("car parts", 2);
-
-renderPuzzle(game1);

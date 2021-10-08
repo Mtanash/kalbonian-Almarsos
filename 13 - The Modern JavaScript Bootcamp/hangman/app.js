@@ -1,3 +1,5 @@
+let game;
+
 const generatePuzzleDOM = (puzzleText) => {
   const puzzle = document.createElement("h3");
   puzzle.textContent = puzzleText;
@@ -24,6 +26,32 @@ const renderPuzzle = (puzzle) => {
 };
 
 window.addEventListener("keypress", (e) => {
-  game1.makeGuess(e.key);
-  renderPuzzle(game1);
+  game.makeGuess(e.key);
+  renderPuzzle(game);
 });
+
+const startGame = async () => {
+  const puzzle = await getPuzzle(3);
+  game = new Hangman(puzzle, 4);
+  renderPuzzle(game);
+};
+
+document.querySelector("#reset").addEventListener("click", startGame);
+
+startGame();
+
+// getPuzzle(3)
+//   .then((puzzle) => {
+//     console.log(puzzle);
+//   })
+//   .catch((error) => {
+//     console.log(error);
+//   });
+
+// getCurrentCountry()
+//   .then((country) => {
+//     console.log(country);
+//   })
+//   .catch((error) => {
+//     console.log(error);
+//   });
