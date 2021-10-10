@@ -1,7 +1,7 @@
 let game;
 
 const generatePuzzleDOM = (puzzleText) => {
-  const puzzle = document.createElement("h3");
+  const puzzle = document.createElement("span");
   puzzle.textContent = puzzleText;
   return puzzle;
 };
@@ -14,7 +14,13 @@ const generateRemainingGuessesDOM = (text) => {
 
 const renderPuzzle = (puzzle) => {
   const puzzleContainer = document.querySelector("#puzzle-container");
-  const puzzleElement = generatePuzzleDOM(puzzle.puzzle);
+  const puzzleElement = document.createElement("div");
+  puzzleElement.classList.add("puzzle");
+
+  puzzle.puzzle.split("").forEach((letter) => {
+    puzzleElement.appendChild(generatePuzzleDOM(letter));
+  });
+
   const remainingGuessesElement = generateRemainingGuessesDOM(
     puzzle.statusMessage
   );

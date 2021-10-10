@@ -26,14 +26,15 @@ const toggleTodo = function (id) {
 };
 
 const generateTodosDOM = (todo) => {
-  const todoElement = document.createElement("div");
+  const todoElement = document.createElement("label");
+  const containerElement = document.createElement("div");
   const checkboxElement = document.createElement("input");
   const textElement = document.createElement("span");
   const deleteButton = document.createElement("button");
 
   // set up checkbox button
   checkboxElement.setAttribute("type", "checkbox");
-  todoElement.appendChild(checkboxElement);
+  containerElement.appendChild(checkboxElement);
   checkboxElement.checked = todo.completed;
   checkboxElement.addEventListener("change", (e) => {
     toggleTodo(todo.id);
@@ -43,10 +44,16 @@ const generateTodosDOM = (todo) => {
 
   // set up todo text
   textElement.textContent = todo.text;
-  todoElement.appendChild(textElement);
+  containerElement.appendChild(textElement);
+
+  // set up container
+  todoElement.classList.add("list-item");
+  containerElement.classList.add("list-item__container");
+  todoElement.appendChild(containerElement);
 
   // set up todo delete button
-  deleteButton.textContent = "X";
+  deleteButton.textContent = "remove";
+  deleteButton.classList.add("button", "button--text");
   todoElement.appendChild(deleteButton);
   deleteButton.addEventListener("click", () => {
     deleteTodo(todo.id);
@@ -59,7 +66,9 @@ const generateTodosDOM = (todo) => {
 
 const generateSummaryDOM = (incompletedTodos) => {
   const todosLeftElement = document.createElement("h2");
-  todosLeftElement.textContent = `You have ${incompletedTodos.length} todos left.`;
+  todosLeftElement.classList.add("list-title");
+  const todoString = incompletedTodos.length === 1 ? "todo" : "todos";
+  todosLeftElement.textContent = `You have ${incompletedTodos.length} ${todoString} left.`;
   return todosLeftElement;
 };
 
@@ -82,10 +91,17 @@ const renderTodos = (todos, filters) => {
   const incompletedTodos = filteredTodos.filter((todo) => !todo.completed);
 
   const todosLeftElement = generateSummaryDOM(incompletedTodos);
-  document.querySelector("#todos-container").appendChild(todosLeftElement);
+  todosContainer.appendChild(todosLeftElement);
 
-  filteredTodos.forEach((todo) => {
-    const paragraph = generateTodosDOM(todo);
-    document.querySelector("#todos-container").appendChild(paragraph);
-  });
+  if (filteredTodos.length < 1) {
+    const emptyMessage = document.createElement("p");
+    emptyMessage.classList.add("empty-message");
+    emptyMessage.textContent = "No to do's to show";
+    todosContainer.appendChild(emptyMessage);
+  } else {
+    filteredTodos.forEach((todo) => {
+      const paragraph = generateTodosDOM(todo);
+      todosContainer.appendChild(paragraph);
+    });
+  }
 };

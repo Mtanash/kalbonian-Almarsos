@@ -20,18 +20,9 @@ const removeNote = (id) => {
 
 // generate note dom
 const generateNoteDOM = (note) => {
-  const noteElement = document.createElement("div");
-  const textElement = document.createElement("a");
-  const button = document.createElement("button");
-
-  // set up button element
-  button.textContent = "X";
-  noteElement.appendChild(button);
-  button.addEventListener("click", () => {
-    removeNote(note.id);
-    saveData(notes);
-    renderNotes(notes, filters);
-  });
+  const noteElement = document.createElement("a");
+  const textElement = document.createElement("p");
+  const status = document.createElement("p");
 
   // set up text element
   if (note.title.length > 0) {
@@ -39,8 +30,17 @@ const generateNoteDOM = (note) => {
   } else {
     textElement.textContent = "Unnamed note";
   }
-  textElement.setAttribute("href", `./edite.html#${note.id}`);
+  textElement.classList.add("list-item__title");
   noteElement.appendChild(textElement);
+
+  // set up link
+  noteElement.setAttribute("href", `./edite.html#${note.id}`);
+  noteElement.classList.add("list-item");
+
+  // set up status
+  status.textContent = generateLastEdited(note.updatedAt);
+  status.classList.add("list-item__subtitle");
+  noteElement.appendChild(status);
 
   return noteElement;
 };
@@ -92,13 +92,25 @@ const renderNotes = (notes, filters) => {
   const notesContainer = document.querySelector("#notes-container");
   notesContainer.innerHTML = "";
 
-  filteredNotes.forEach((note) => {
-    const noteElement = generateNoteDOM(note);
-    notesContainer.appendChild(noteElement);
-  });
+  if (filteredNotes.length > 0) {
+    filteredNotes.forEach((note) => {
+      const noteElement = generateNoteDOM(note);
+      notesContainer.appendChild(noteElement);
+    });
+  } else {
+    const temporaryElement = document.createElement("h3");
+    temporaryElement.textContent = "Start adding todos.";
+    temporaryElement.classList.add("empty-message");
+    notesContainer.appendChild(temporaryElement);
+  }
 };
 
 // save data to lacalstorage
 const saveData = (notes) => {
   localStorage.setItem("notes", JSON.stringify(notes));
+};
+
+// generate last edited text
+const generateLastEdited = (timestamp) => {
+  return `Last updated ${moment(timestamp).fromNow()}`;
 };

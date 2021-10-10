@@ -15,13 +15,13 @@ document.querySelector("#search-input").addEventListener("input", (e) => {
 document.querySelector("#todo-form").addEventListener("submit", (e) => {
   e.preventDefault();
 
-  if (e.target.elements.todoText.value !== "") {
-    todos.push({
-      id: uuidv4(),
-      text: e.target.elements.todoText.value,
-      completed: false,
-    });
-  }
+  if (e.target.elements.todoText.value === "") return;
+  todos.push({
+    id: uuidv4(),
+    text: e.target.elements.todoText.value.trim(),
+    completed: false,
+  });
+
   saveTodos(todos);
   renderTodos(todos, filters);
   e.target.elements.todoText.value = "";

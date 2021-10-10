@@ -1,6 +1,6 @@
 const getPuzzle = async (wordCount) => {
   const response = await fetch(
-    `http://puzzle.mead.io/puzzle?wordCount=${wordCount}`
+    `//puzzle.mead.io/puzzle?wordCount=${wordCount}`
   );
   if (response.status !== 200) throw new Error("Unable to fetch data");
   const data = await response.json();
@@ -8,7 +8,7 @@ const getPuzzle = async (wordCount) => {
 };
 
 const getPuzzleOld = (wordCount) =>
-  fetch(`http://puzzle.mead.io/puzzle?wordCount=${wordCount}`)
+  fetch(`//puzzle.mead.io/puzzle?wordCount=${wordCount}`)
     .then((response) => {
       if (response.status === 200) {
         return response.json();
@@ -20,7 +20,7 @@ const getPuzzleOld = (wordCount) =>
 
 const getCountryDetails = async (countryCode) => {
   const response = await fetch(
-    "http://api.countrylayer.com/v2/all?access_key=e304b2a290bedcca39ed35b0e14d9afc"
+    "//api.countrylayer.com/v2/all?access_key=e304b2a290bedcca39ed35b0e14d9afc"
   );
   if (response.status === 200) {
     const data = await response.json();
@@ -31,7 +31,7 @@ const getCountryDetails = async (countryCode) => {
 };
 
 const getLocation = async () => {
-  const response = await fetch("http://ipinfo.io/json?token=ba7b02824cd7c3");
+  const response = await fetch("//ipinfo.io/json?token=ba7b02824cd7c3");
   if (response.status === 200) {
     return response.json();
   } else {

@@ -18,7 +18,7 @@ noteTitle.value = note.title;
 noteTitle.addEventListener("input", (e) => {
   note.title = e.target.value;
   note.updatedAt = moment().valueOf();
-  lastEdited.textContent = `Last updated ${moment(note.updatedAt).fromNow()}`;
+  lastEdited.textContent = generateLastEdited(note.updatedAt);
   saveData(notes);
 });
 
@@ -27,7 +27,7 @@ noteBody.value = note.body;
 noteBody.addEventListener("input", (e) => {
   note.body = e.target.value;
   note.updatedAt = moment().valueOf();
-  lastEdited.textContent = `Last updated ${moment(note.updatedAt).fromNow()}`;
+  lastEdited.textContent = generateLastEdited(note.updatedAt);
   saveData(notes);
 });
 
@@ -39,7 +39,7 @@ removeNoteButton.addEventListener("click", () => {
 });
 
 // set up last edited text
-lastEdited.textContent = `Last updated ${moment(note.updatedAt).fromNow()}`;
+lastEdited.textContent = generateLastEdited(note.updatedAt);
 
 window.addEventListener("storage", (e) => {
   if (e.key === "notes") {
@@ -54,6 +54,6 @@ window.addEventListener("storage", (e) => {
 
     noteTitle.value = note.title;
     noteBody.value = note.body;
-    lastEdited.textContent = `Last updated ${moment(note.updatedAt).fromNow()}`;
+    lastEdited.textContent = generateLastEdited(note.updatedAt);
   }
 });
