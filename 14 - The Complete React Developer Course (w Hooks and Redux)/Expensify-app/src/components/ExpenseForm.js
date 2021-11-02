@@ -1,8 +1,6 @@
 import React from "react";
 import moment from "moment";
 import { SingleDatePicker } from "react-dates";
-import "react-dates/initialize";
-import "react-dates/lib/css/_datepicker.css";
 
 export default class ExpenseForm extends React.Component {
   constructor(props) {
@@ -11,7 +9,7 @@ export default class ExpenseForm extends React.Component {
     this.state = {
       description: props.expense ? props.expense.description : "",
       note: props.expense ? props.expense.note : "",
-      amount: props.expense ? props.expense.amount / 100 : "",
+      amount: props.expense ? props.expense.amount : "",
       createdAt: props.expense ? moment(props.expense.createdAt) : moment(),
       calendarFocused: false,
       error: "",
@@ -43,7 +41,7 @@ export default class ExpenseForm extends React.Component {
     if (createdAt) this.setState(() => ({ createdAt }));
   };
 
-  onFocuseChange = ({ focused }) => {
+  onFocusChange = ({ focused }) => {
     this.setState(() => ({ calendarFocused: focused }));
   };
 
@@ -72,6 +70,7 @@ export default class ExpenseForm extends React.Component {
         {this.state.error && <p>{this.state.error}</p>}
         <form onSubmit={this.onSubmit}>
           <input
+            className="description-input"
             type="text"
             placeholder="Description"
             autoFocus
@@ -88,7 +87,7 @@ export default class ExpenseForm extends React.Component {
             date={this.state.createdAt}
             onDateChange={this.onDateChange}
             focused={this.state.calendarFocused}
-            onFocusChange={this.onFocuseChange}
+            onFocusChange={this.onFocusChange}
             numberOfMonths={1}
             isOutsideRange={() => false}
           />
