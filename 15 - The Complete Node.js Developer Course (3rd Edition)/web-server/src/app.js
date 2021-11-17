@@ -1,6 +1,8 @@
 const express = require("express");
 const path = require("path");
 const hbs = require("hbs");
+const forecast = require("./utils/forecast");
+const geoCode = require("./utils/geoCode");
 
 const app = express();
 
@@ -34,7 +36,33 @@ app.get("/help", (req, res) => {
 });
 
 app.get("/weather", (req, res) => {
-  res.send({ forecast: "Cloudy", location: "Damietta" });
+  if (!req.query.address) {
+    return res.send({ error: "Please provide an address." });
+  }
+
+  geoCode(
+    req.query.address,
+    (error, { latitude, longitude, placeName } = {}) => {
+      if (error) {
+        return res.send({ error });
+      }
+      forecast(latitude, longitude, (error, forecastData) => {
+        if (error) {
+          return res.send({ error });
+        }
+        res.send({
+          placeName,
+          forecast: forecastData,
+          address: req.query.address,
+        });
+      });
+    }
+  );
+});
+
+app.get("/products", (req, res) => {
+  console.log(req.query);
+  res.send({ products: [] });
 });
 
 app.get("/help/*", (req, res) => {
